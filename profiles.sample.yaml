@@ -1,0 +1,116 @@
+# LEDES Tool profile file
+# Add a separate entry for each desired conversion profile
+
+Default:
+ output_format: 1998BI
+
+# First Line is name of profile in GUI
+Profile1:
+
+# Output Format parameter allows selection of the format that the file is converted to.
+# Currently valid output_format settings are 1998B and 1998BI
+ output_format: 1998BI
+
+# Transformations are specified in an array under the transformations key.  Any number 
+# of transformations may be specified.  The simplest format for specifying a transformation
+# is by specifying the field/column name (or number) as a key, followed by key-value pairs for
+# one or more transformation functions.  Examples are given below:  
+ transformations:
+  # The 'oldtext' key may be used for replacing or removing text from a field
+  # For the field LAW_FIRM_MATTER_ID, this REMOVES the text specified in "oldtext"
+  - LAW_FIRM_MATTER_ID:
+     oldtext: "XXXXX-"
+  # Same as above, but with different "oldtext"
+  # Note that the same field may be transformed multiple times.
+  - LAW_FIRM_MATTER_ID:
+     oldtext: "YYYYY-"
+  # For actual replacement, the 'newtext' key should also be specified.
+  # For the field INVOICE_NUMBER, this REPLACES the text in "oldtext" with the text in "newtext"   
+  - INVOICE_NUMBER:
+     oldtext: "-"
+     newtext: ":"
+  # The 'source' key may be used for copying content from another field.
+  # This COPIES the contents from LAW_FIRM_ID to CLIENTS_TAX_ID
+  - CLIENT_TAX_ID:
+     source: LAW_FIRM_ID
+  # Multiple transformations may be specified at once, but only one of each kind.  The order
+  # of operations is set in the app.  
+  # This copies INVOICE_TOTAL to INVOICE_NET_TOTAL and removes the $
+  - INVOICE_NET_TOTAL:
+     source: INVOICE_TOTAL
+     oldtext: "$"
+  # The 'value' key may be used to set the value of a field to specified text.
+  # This SETS the value of the field PO_NUMBER to the specified text
+  - PO_NUMBER:
+     value: "199079"
+  # This SETS the field INVOICE_DESCRIPTION to empty
+  - INVOICE_DESCRIPTION:
+     value: ''
+  # This 'upper' key may be used to change text to all caps  
+  - TIMEKEEPER_LAST_NAME:
+     upper: true
+  # This 'lower' key may be used to change text to all caps  
+  - TIMEKEEPER_LAST_NAME:
+     lower: true    
+  # The 'split' key may be used to split a field up into multiple portions using the
+  # specified separator.  By default, only the first portion is kept.  To keep a different
+  # portion, the 'index' key may be used (first = 0, second = 1, etc)
+  # This takes everything before the first slash in CLIENT_MATTER_ID
+  - CLIENT_MATTER_ID:
+     split: "/"
+  # This takes the second portion / everything between the first and second hyphen in LAW_FIRM_MATTER_ID
+  - LAW_FIRM_MATTER_ID:
+     split: "-"
+     index: 1
+  # As a more complex example, this copies TIMEKEEPER_NAME to TIMEKEEPER_FIRST_NAME, changes it
+  # to all caps, splits it by commas (more specificaly, the substring ", ", and keeps the second portion
+  - TIMEKEEPER_LAST_NAME:
+     source: TIMEKEEPER_NAME
+     upper: true
+     split: ", "
+     index: 1
+  # The 'map' key allows you to specify a mapping of key-value pairs.  If the field matches any
+  # one of these keys (exactly), it will be replaced with the corresponding value.  Hence, in 
+  # the example below, when TIMEKEEPER_ID is XXX, it is replaced with 1
+  - TIMEKEEPER_ID:
+     map: { 'XXX': 1, 'YYY': 2, 'ZZZ': 3 , 'AAA': 0, 'BBB': 20, 'CCC': 'None' }
+  # An alternative format for specifying a transformation is by specifying the name or number of the field(s)
+  # you wish to change as the value to a field key, with the transofrmation(s) listed at the same level as
+  # the field key.  For instance, this sets PO_NUMBER to 199079
+  - field: PO_NUMBER
+    value: "199079"
+  # And this is the same as the TIME_KEEPER_LAST_NAME example above
+  - TIMEKEEPER_LAST_NAME:
+    source: TIMEKEEPER_NAME
+    upper: true
+    split: ", "
+    index: 1
+  # A benefit to doing it this way, is that you can apply the same transformation to multiple fields at
+  # at the same time.  For instance, this sets all of the listed fields to 0
+  - field: [LINE_ITEM_TAX_RATE,LINE_ITEM_TAX_TOTAL,INVOICE_REPORTED_TAX_TOTAL]
+    value: 0
+  # Finally, you may specify a field/column number in place of the column name.  Remember that 0
+  # is the first number.  These are the last two transformations using column numbers instead of names.
+  - 24:
+     value: "199079"
+  - field: [47,48,50]
+    value: 0
+
+
+# Autoselect allows you to specify one or more values to check for in one or more fields to see if this is the
+# correct conversion setting.  The app looks only at the values of the fields in the first line item of the LEDES file.  
+# This parameter is optional. 
+ autoselect:
+  # For instance, this line looks for XXXXX in the CLIENT_ID field
+  CLIENT_ID: XXXXX
+  # As another example, this line looks for Bob or Jane in the TIMEKEEPER_NAME field
+  TIMEKEEPER_NAME: ["Bob","Jane"]
+  # As another example, this line looks for XX-XXXXX in field index 25 (the CLIENT_TAX_ID field)
+  25: "XX-XXXX"
+
+
+# Any number of additional settings may be specified in the same manner
+Profile2:
+ output_format: 1998B
+ # and so on
+

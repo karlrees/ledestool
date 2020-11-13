@@ -1,0 +1,5 @@
+# LEDES Tool profile file
+# Add a separate entry for each desired profile
+
+Default:
+ output_format: 1998BI
