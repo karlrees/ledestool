@@ -1,5 +1,0 @@
-# LEDES Tool configuration file
-# Add a separate entry for each desired conversion setting
-
-Default:
- output_format: 1998BI
