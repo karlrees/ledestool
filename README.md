@@ -11,7 +11,7 @@ Optionally, you may manipulate a LEDES 1998B file without converting to 1998BI.
 ## Instructions
 All files to be converted should be placed in a common folder.  Files may have any extension, and may also be placed in subdirectories within the common folder.  
 
-To use the tool, just launch it and select your folder using the `Browse` button.  Then select your profile (either `Default` or a custom one you defined in the `profiles.yaml` file).  You may also select `AutoDetect`, in which case the tool attempts to detect the right profile to use based on the `autoselect` key in the profile (if defined).  See the sample `profiles.yaml` for details.
+To use the tool, just launch it and select your folder using the `Browse` button.  Then select your profile (either `Default` or a custom one you defined in the `profiles.yaml` file).  You may also select `AutoSelect`, in which case the tool attempts to detect the right profile to use based on the `autoselect` key in the profile (if defined).  See the sample `profiles.yaml` for details.
 
 Once the profile is selected, click on `Convert`.  Your converted files will appear in the same folders as to original files.  The converted file will have a `.converted` extension prior to the original extension of the file (e.g. `invoice.ledes` will become `invoice.converted.ledes`).
 
